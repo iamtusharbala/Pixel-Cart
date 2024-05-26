@@ -37,21 +37,49 @@ router.post('/product', isAuth, isAdmin, async (req, res) => {
 })
 
 // update a product
-router.patch('/product/:id', isAuth, isAdmin, (req, res) => {
+router.patch('/product/:id', isAuth, isAdmin, async (req, res) => {
     try {
+        const { id } = req.params;
+        const { name, description, price, category, stock, image } = req.body;
+
+        if (!name || !description || !price || !category || !stock || !image) {
+            return res.status(400).json({ message: 'All fields must be present' });
+        }
+
+        if (isNaN(price) || isNaN(stock)) {
+            return res.status(400).json({ message: 'Price and stock must be numeric values' });
+        }
+
+        const updatedProduct = await Product.findByIdAndUpdate(id, { name, description, price, category, stock, image }, { new: true });
+
+        if (!updatedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        return res.status(200).json({ message: 'Product updated successfully', product: updatedProduct });
 
     } catch (error) {
-        console.error(error);
+        console.error('Error while updating product:', error);
+        return res.status(500).json({ message: 'Internal server error' });
     }
-})
+});
+
 
 // delete a product
-router.delete('/product/:id', isAuth, isAdmin, (req, res) => {
+router.delete('/product/:id', isAuth, isAdmin, async (req, res) => {
     try {
+        const { id } = req.params;
+        const deletedProduct = await Product.findByIdAndDelete(id);
+        if (!deletedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+        return res.status(200).json({ message: 'Product deleted successfully' });
 
     } catch (error) {
-        console.error(error);
+        console.error('Error while deleting product:', error);
+        return res.status(500).json({ message: 'Internal server error' });
     }
-})
+});
+
 
 module.exports = router
