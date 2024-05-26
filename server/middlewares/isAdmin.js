@@ -9,3 +9,5 @@ const isAdmin = async (req, res, next) => {
 }
 
 module.exports = isAdmin
+
+// check whether the user has admin credentials or not

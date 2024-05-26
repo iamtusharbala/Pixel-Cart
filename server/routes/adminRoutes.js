@@ -1,24 +1,36 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../models/user')
-const bcrypt = require('bcrypt')
 const isAuth = require('../middlewares/isAuth')
 const isAdmin = require('../middlewares/isAdmin')
+const Product = require('../models/product')
 require('dotenv').config()
 
 // admin dashboard
-router.get('/dashboard', isAuth, isAdmin, (req, res) => {
+router.get('/dashboard', isAuth, isAdmin, async (req, res) => {
     try {
-        res.send('admin dashboard')
+        const allProducts = await Product.find();
+        return res.status(200).send({ message: 'All Products fetched successfully', product: allProducts })
     } catch (error) {
         console.error(error);
     }
 })
 
 // create new product
-router.post('/product', isAuth, isAdmin, (req, res) => {
+router.post('/product', isAuth, isAdmin, async (req, res) => {
     try {
+        const { name, description, price, category, stock, image } = req.body
+        const newProduct = new Product({
+            name,
+            description,
+            price,
+            category,
+            stock,
+            image
+        })
+        await newProduct.save()
 
+        return res.status(201).send({ message: 'New Product created successfully', product: newProduct })
     } catch (error) {
         console.error(error);
     }

@@ -21,3 +21,6 @@ const isAuth = async (req, res, next) => {
 }
 
 module.exports = isAuth
+
+
+// Check whether the user has Authorized access or not
