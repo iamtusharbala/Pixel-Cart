@@ -2,20 +2,22 @@ const express = require('express')
 const router = express.Router()
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+const isAuth = require('../middlewares/isAuth')
+const isAdmin = require('../middlewares/isAdmin')
 require('dotenv').config()
 
 // Register a new user 
 router.post('/register', async (req, res) => {
     try {
-        const { email, password } = req.body
+        const { email, password, isAdmin } = req.body
         const user = await User.findOne({ email });
         if (user) {
             res.status(409).json({ message: 'User already exists' })
         }
         const newUser = new User({
             email,
-            password
+            password,
+            isAdmin
         })
 
         // Password hashing 
@@ -51,17 +53,22 @@ router.post('/login', async (req, res) => {
         }
 
         const token = user.generateAuthToken()
-        const data = {
-            token: token,
-            isAdmin: user.isAdmin,
-            _id: user._id
-        }
-        return res.status(200).json({ message: 'User logged in successfully', data })
+        res.setHeader('Authorization', `Bearer ${token}`); //Set Authorization token in Header
+        return res.status(200).json({ message: 'User logged in successfully', token })
 
     } catch (error) {
         console.error(error);
         res.status(400).json({ message: 'Error while logging in user' })
     }
+})
+
+
+router.get('/protected', isAuth, (req, res) => {
+    res.send('Protected Routes')
+})
+
+router.get('/admin', isAuth, isAdmin, (req, res) => {
+    res.send('Admin Routes')
 })
 
 module.exports = router

@@ -21,8 +21,8 @@ const userSchema = new Schema({
     timestamps: true
 })
 
-userSchema.methods.generateAuthToken = () => {
-    const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, process.env.JWT_SECRET_KEY)
+userSchema.methods.generateAuthToken = function () {
+    const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
     return token
 }
 
