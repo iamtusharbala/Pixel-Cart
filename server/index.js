@@ -3,6 +3,7 @@ const connectDB = require('./connect')
 const userRoutes = require('./routes/userRoutes')
 const adminRoutes = require('./routes/adminRoutes')
 const isAuth = require('./middlewares/isAuth')
+const cors = require('cors')
 
 
 const app = express()
@@ -13,6 +14,8 @@ const PORT = 3000
 
 // Connect to DB
 connectDB()
+
+app.use(cors())
 
 app.use('/api/auth', userRoutes)
 app.use('/api/admin', adminRoutes)
