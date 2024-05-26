@@ -1,6 +1,7 @@
 const express = require('express')
 const connectDB = require('./connect')
 const userRoutes = require('./routes/userRoutes')
+const adminRoutes = require('./routes/adminRoutes')
 const isAuth = require('./middlewares/isAuth')
 
 
@@ -14,6 +15,7 @@ const PORT = 3000
 connectDB()
 
 app.use('/api/auth', userRoutes)
+app.use('/api/admin', adminRoutes)
 
 // Custom Middlewares
 app.use(isAuth)
