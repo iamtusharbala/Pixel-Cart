@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import NavBar from '../Components/NavBar/NavBar'
 import axios from 'axios'
 import ProductCard from '../Components/ProductCard/ProductCard'
 
@@ -21,11 +19,10 @@ const HomePage = () => {
     }
     return (
         <>
-            <NavBar />
             <div className="container">
                 <div className="row">
                     <div className="products mt-5 d-flex justify-content-around flex-wrap">
-                        {productList.length > 0 && productList.map((item) => <ProductCard product={item} />)}
+                        {productList.length > 0 && productList.map((item) => <ProductCard key={item.id} product={item} />)}
                     </div>
                 </div>
             </div>

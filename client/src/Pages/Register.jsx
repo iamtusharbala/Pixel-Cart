@@ -1,15 +1,21 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const Register = () => {
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     })
 
-    const handleForm = (e) => {
+    const handleForm = async (e) => {
         e.preventDefault()
-        axios.post('http://localhost:3000/api/auth/register', { data: formData })
+        const response = await axios.post('http://localhost:3000/api/auth/register', { data: formData })
+        if (response.data.message === 'New user created successfully') {
+            navigate('/login')
+        }
+        // console.log(response);
     }
     const handleChange = (e) => {
         const { name, value } = e.target;

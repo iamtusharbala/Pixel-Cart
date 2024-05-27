@@ -20,10 +20,10 @@ router.get('/products', async (req, res) => {
 // Register a new user 
 router.post('/register', async (req, res) => {
     try {
-        const { email, password, isAdmin } = req.body
+        const { email, password, isAdmin } = req.body.data
         const user = await User.findOne({ email });
         if (user) {
-            res.status(409).json({ message: 'User already exists' })
+            return res.status(409).json({ message: 'User already exists' })
         }
         const newUser = new User({
             email,
@@ -49,7 +49,7 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     try {
-        const { email, password } = req.body
+        const { email, password } = req.body.data
         const user = await User.findOne({ email });
         if (!email || !password) {
             return res.status(400).json({ message: 'Invalid email or password' })
@@ -64,8 +64,13 @@ router.post('/login', async (req, res) => {
         }
 
         const token = user.generateAuthToken()
+        const data = {
+            token: token,
+            isAdmin: user.isAdmin,
+            userId: user._id
+        }
         res.setHeader('Authorization', `Bearer ${token}`); //Set Authorization token in Header
-        return res.status(200).json({ message: 'User logged in successfully', token })
+        return res.status(200).json({ message: 'User logged in successfully', data })
 
     } catch (error) {
         console.error(error);

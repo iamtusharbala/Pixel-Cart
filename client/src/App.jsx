@@ -1,28 +1,45 @@
-import './App.css'
-import { Routes, Route } from 'react-router-dom'
-import HomePage from './Pages/HomePage'
-import Login from './Pages/Login'
-import Register from './Pages/Register'
-import { useState } from 'react'
-import { AuthContext } from './context/AuthContext'
+import './App.css';
+import { Routes, Route } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import HomePage from './Pages/HomePage';
+import Login from './Pages/Login';
+import Register from './Pages/Register';
+import Profile from './Pages/User/Profile';
+import Dashboard from './Pages/Admin/Dashboard';
+import NavBar from './Components/NavBar/NavBar';
+import { AuthContext } from './context/AuthContext';
+import { RequiredAuth } from './util/authRoutes';
 
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState({
     token: null,
-    isAdmin: null,
-    userId: null
-  })
+    userId: null,
+    isAdmin: false,
+  });
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+    const isAdmin = localStorage.getItem("isAdmin") === "true";
+    if (token && userId) {
+      setUserLoggedIn({ token, userId, isAdmin });
+    }
+  }, []);
 
   const login = (token, userId, isAdmin) => {
-    localStorage.setItem('token', token)
-    localStorage.setItem('isAdmin', isAdmin)
-    setUserLoggedIn({ token: token, userId: userId, isAdmin: isAdmin })
-  }
-  const logout = (token, userId, isAdmin) => {
-    localStorage.removeItem('token', token)
-    localStorage.removeItem('isAdmin', isAdmin)
-    setUserLoggedIn({ token: null, userId: null, isAdmin: false })
-  }
+    localStorage.setItem("token", token);
+    localStorage.setItem("userId", userId);
+    localStorage.setItem("isAdmin", isAdmin.toString());
+    setUserLoggedIn({ token, userId, isAdmin });
+  };
+
+  const logout = () => {
+    setUserLoggedIn({ token: null, userId: null, isAdmin: false });
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("isAdmin");
+  };
+
   return (
     <AuthContext.Provider value={{
       token: userLoggedIn.token,
@@ -31,13 +48,16 @@ function App() {
       login: login,
       logout: logout
     }}>
+      <NavBar />
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/profile' element={<RequiredAuth><Profile /></RequiredAuth>} />
+        <Route path='/dashboard' element={<RequiredAuth adminRequired={true}><Dashboard /></RequiredAuth>} />
       </Routes>
-    </AuthContext.Provider >
-  )
+    </AuthContext.Provider>
+  );
 }
 
-export default App
+export default App;
