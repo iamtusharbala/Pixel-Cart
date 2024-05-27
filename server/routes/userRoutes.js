@@ -17,6 +17,21 @@ router.get('/products', async (req, res) => {
     }
 })
 
+
+// Get one product
+router.get('/products/:id', async (req, res) => {
+    try {
+        const { id } = req.params
+        const product = await Product.findById(id);
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+        return res.status(200).send({ message: 'Product fetched successfully', product })
+    } catch (error) {
+        console.error(error);
+    }
+})
+
 // Register a new user 
 router.post('/register', async (req, res) => {
     try {
