@@ -11,6 +11,7 @@ import { AuthContext } from './context/AuthContext';
 import { RequiredAuth } from './util/authRoutes';
 import Orders from './Pages/User/Orders';
 import Cart from './Pages/User/Cart';
+import ProductPage from './Pages/User/ProductPage';
 
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState({
@@ -55,6 +56,7 @@ function App() {
         <Route path='/' element={<HomePage />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/product/:id' element={<ProductPage />} />
         <Route path='/profile' element={<RequiredAuth><Profile /></RequiredAuth>} />
         <Route path='/admin-dashboard' element={<RequiredAuth adminRequired={true}><Dashboard /></RequiredAuth>} />
         <Route path='/orders' element={<RequiredAuth ><Orders /></RequiredAuth>} />

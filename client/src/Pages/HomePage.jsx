@@ -22,7 +22,7 @@ const HomePage = () => {
             <div className="container">
                 <div className="row">
                     <div className="products mt-5 d-flex justify-content-around flex-wrap">
-                        {productList.length > 0 && productList.map((item) => <ProductCard key={item.id} product={item} />)}
+                        {productList.length > 0 && productList.map((item) => <ProductCard key={item._id} product={item} />)}
                     </div>
                 </div>
             </div>
