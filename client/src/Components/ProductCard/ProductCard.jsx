@@ -26,9 +26,6 @@ const ProductCard = ({ product }) => {
                     ${product.price}
                 </Typography>
             </CardContent>
-            <CardActions>
-                <Button size="small">View Product</Button>
-            </CardActions>
         </Card>
     );
 }
