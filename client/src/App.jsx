@@ -9,6 +9,8 @@ import Dashboard from './Pages/Admin/Dashboard';
 import NavBar from './Components/NavBar/NavBar';
 import { AuthContext } from './context/AuthContext';
 import { RequiredAuth } from './util/authRoutes';
+import Orders from './Pages/User/Orders';
+import Cart from './Pages/User/Cart';
 
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState({
@@ -55,6 +57,8 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route path='/profile' element={<RequiredAuth><Profile /></RequiredAuth>} />
         <Route path='/dashboard' element={<RequiredAuth adminRequired={true}><Dashboard /></RequiredAuth>} />
+        <Route path='/orders' element={<RequiredAuth ><Orders /></RequiredAuth>} />
+        <Route path='/cart' element={<RequiredAuth ><Cart /></RequiredAuth>} />
       </Routes>
     </AuthContext.Provider>
   );

@@ -1,3 +1,4 @@
+import './NavBar.css';
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -8,15 +9,16 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
 
 const NavBar = () => {
-    const [auth, setAuth] = React.useState(true);
+    const authContext = React.useContext(AuthContext);
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const navigate = useNavigate();
 
-    const handleChange = (event) => {
-        setAuth(event.target.checked);
-    };
+    const token = localStorage.getItem('token');
+    authContext.token = token;
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -24,6 +26,11 @@ const NavBar = () => {
 
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const logout = () => {
+        authContext.logout(null, null, false);
+        navigate('/login');
     };
 
     return (
@@ -40,10 +47,13 @@ const NavBar = () => {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        Pixel Cart
+                        <Link to="/" className='a-link'>Pixel Cart</Link>
                     </Typography>
-                    {auth && (
-                        <div>
+                    {token && (
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            <Typography variant="h6" component="div" sx={{ mr: 2 }}>
+                                <Link to="/cart" className='a-link'><i className="fa-solid fa-cart-shopping" ></i>Cart</Link>
+                            </Typography>
                             <IconButton
                                 size="large"
                                 aria-label="account of current user"
@@ -69,8 +79,13 @@ const NavBar = () => {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                <MenuItem onClick={handleClose}><Link to="/profile">Profile</Link></MenuItem>
-                                <MenuItem onClick={handleClose}>My account</MenuItem>
+                                <MenuItem onClick={handleClose}>
+                                    <Link to="/profile" className='nav-link'>Profile</Link>
+                                </MenuItem>
+                                <MenuItem onClick={handleClose}>
+                                    <Link to="/orders" className='nav-link'>My Orders</Link>
+                                </MenuItem>
+                                <MenuItem onClick={logout} className='nav-link'>Logout</MenuItem>
                             </Menu>
                         </div>
                     )}
@@ -78,6 +93,6 @@ const NavBar = () => {
             </AppBar>
         </Box>
     );
+};
 
-}
 export default NavBar;
