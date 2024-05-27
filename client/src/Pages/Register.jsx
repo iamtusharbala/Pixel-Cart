@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Register = () => {
     const navigate = useNavigate()
@@ -39,6 +39,7 @@ const Register = () => {
                         <input type="checkbox" className="form-check-input" id="exampleCheck1" />
                         <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
                     </div>
+                    <p className='text-muted'>Already registered? <Link to='/login'>Login here</Link></p>
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </form>
             </div>

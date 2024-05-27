@@ -56,7 +56,7 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/profile' element={<RequiredAuth><Profile /></RequiredAuth>} />
-        <Route path='/dashboard' element={<RequiredAuth adminRequired={true}><Dashboard /></RequiredAuth>} />
+        <Route path='/admin-dashboard' element={<RequiredAuth adminRequired={true}><Dashboard /></RequiredAuth>} />
         <Route path='/orders' element={<RequiredAuth ><Orders /></RequiredAuth>} />
         <Route path='/cart' element={<RequiredAuth ><Cart /></RequiredAuth>} />
       </Routes>

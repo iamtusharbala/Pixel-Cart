@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
 import axios from 'axios'
 
@@ -46,6 +46,7 @@ const Login = () => {
                         <input type="checkbox" className="form-check-input" id="exampleCheck1" />
                         <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
                     </div>
+                    <p className='text-muted'>New user? <Link to='/register'>Register here</Link></p>
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </form>
             </div>

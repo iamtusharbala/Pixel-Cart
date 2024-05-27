@@ -18,7 +18,9 @@ const NavBar = () => {
     const navigate = useNavigate();
 
     const token = localStorage.getItem('token');
+    const isAdmin = localStorage.getItem('isAdmin');
     authContext.token = token;
+    authContext.isAdmin = isAdmin;
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -47,13 +49,20 @@ const NavBar = () => {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        <Link to="/" className='a-link'>Pixel Cart</Link>
+                        {(isAdmin === 'false' ? (<Link to="/" className='a-link'>Pixel Cart</Link>) : (<Link to="/admin-dashboard" className='a-link'>Pixel Cart</Link>))}
                     </Typography>
-                    {token && (
+                    {isAdmin === 'true' && (
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <Typography variant="h6" component="div" sx={{ mr: 2 }}>
-                                <Link to="/cart" className='a-link'><i className="fa-solid fa-cart-shopping" ></i>Cart</Link>
+                                <Link to="/admin-dashboard" className='a-link'>Admin</Link>
                             </Typography>
+                        </div>
+                    )}
+                    {token && (
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                            {isAdmin === 'false' && <Typography variant="h6" component="div" sx={{ mr: 2 }}>
+                                <Link to="/cart" className='a-link'><i className="fa-solid fa-cart-shopping" ></i>Cart</Link>
+                            </Typography>}
                             <IconButton
                                 size="large"
                                 aria-label="account of current user"
