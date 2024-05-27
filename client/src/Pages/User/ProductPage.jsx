@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 const ProductPage = ({ setCartCount }) => {
     const { id } = useParams()
     const [product, setProduct] = useState([])
+    const [addCart, setAddCart] = useState(false)
     useEffect(() => {
         fetchProduct()
     }, [])
@@ -14,6 +15,7 @@ const ProductPage = ({ setCartCount }) => {
     }
 
     const addToCart = () => {
+        setAddCart(true)
         setCartCount(prev => prev + 1)
     }
     return (
@@ -29,7 +31,7 @@ const ProductPage = ({ setCartCount }) => {
                             <p className="card-text">{product.description}</p>
                             <p className="card-text"><small className="text-body-secondary">${product.price}</small></p>
                             <p className="card-text text-muted"><small className="text-body-secondary">{product.category}</small></p>
-                            <button type="button" class="btn btn-primary" onClick={addToCart}>Add To Cart</button>
+                            {!addCart ? (<button type="button" class="btn btn-primary" onClick={addToCart}>Add To Cart</button>) : (<button type="button" class="btn btn-success">Added To Cart Successfully</button>)}
                         </div>
                     </div>
                 </div>
