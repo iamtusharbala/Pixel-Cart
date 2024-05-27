@@ -12,7 +12,7 @@ import Menu from '@mui/material/Menu';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 
-const NavBar = () => {
+const NavBar = ({ cartCount }) => {
     const authContext = React.useContext(AuthContext);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const navigate = useNavigate();
@@ -61,7 +61,11 @@ const NavBar = () => {
                     {token && (
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             {isAdmin === 'false' && <Typography variant="h6" component="div" sx={{ mr: 2 }}>
-                                <Link to="/cart" className='a-link'><i className="fa-solid fa-cart-shopping" ></i>Cart</Link>
+                                <Link to="/cart" className='a-link'><i className="fa-solid fa-cart-shopping" ></i>Cart
+                                    {cartCount > 0 && (<span class="position-absolute translate-middle badge rounded-pill bg-danger">
+                                        {cartCount}
+                                    </span>)}
+                                </Link>
                             </Typography>}
                             <IconButton
                                 size="large"
@@ -100,7 +104,7 @@ const NavBar = () => {
                     )}
                 </Toolbar>
             </AppBar>
-        </Box>
+        </Box >
     );
 };
 

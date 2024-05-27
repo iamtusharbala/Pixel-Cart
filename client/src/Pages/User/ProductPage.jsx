@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
 
-const ProductPage = () => {
+const ProductPage = ({ setCartCount }) => {
     const { id } = useParams()
     const [product, setProduct] = useState([])
     useEffect(() => {
@@ -11,6 +11,10 @@ const ProductPage = () => {
     const fetchProduct = async () => {
         const response = await axios.get(`http://localhost:3000/api/auth/products/${id}`);
         setProduct(response.data.product);
+    }
+
+    const addToCart = () => {
+        setCartCount(prev => prev + 1)
     }
     return (
         <div className="container">
@@ -25,7 +29,7 @@ const ProductPage = () => {
                             <p className="card-text">{product.description}</p>
                             <p className="card-text"><small className="text-body-secondary">${product.price}</small></p>
                             <p className="card-text text-muted"><small className="text-body-secondary">{product.category}</small></p>
-                            <button type="button" class="btn btn-primary">Add To Cart</button>
+                            <button type="button" class="btn btn-primary" onClick={addToCart}>Add To Cart</button>
                         </div>
                     </div>
                 </div>
